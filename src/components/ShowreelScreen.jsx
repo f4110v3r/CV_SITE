@@ -16,7 +16,7 @@ function ShowreelScreen({ onContinue }) {
         <div className="showreel-frame">
           <video
             className="showreel-video"
-            src="/showreel.mp4"
+            src={`${import.meta.env.BASE_URL}showreel.mp4`}
             autoPlay
             muted
             loop

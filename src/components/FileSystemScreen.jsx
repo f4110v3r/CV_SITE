@@ -377,7 +377,7 @@ function AboutBlock() {
           overflow: 'hidden',
         }}>
           {photoPath && !photoError && (
-            <img src={photoPath} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={() => setPhotoError(true)} />
+            <img src={`${import.meta.env.BASE_URL || '/'}${(photoPath || '').replace(/^\//, '')}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={() => setPhotoError(true)} />
           )}
           {showPlaceholder && <span className="text-muted" style={{ fontSize: 10 }}>[ФОТО]</span>}
         </div>
@@ -396,7 +396,7 @@ function AboutBlock() {
         {cvPdfPath && (
           <>
             <br />
-            <ContactLink href={cvPdfPath}>Скачать CV (PDF)</ContactLink>
+            <ContactLink href={`${import.meta.env.BASE_URL || '/'}${(cvPdfPath || '').replace(/^\//, '')}`}>Скачать CV (PDF)</ContactLink>
           </>
         )}
       </div>
