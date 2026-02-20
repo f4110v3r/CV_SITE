@@ -9,13 +9,9 @@ function App() {
 
   useEffect(() => {
     const handleKey = (event) => {
-      if (stage === 'showreel') {
-        if (
-          event.key === 'Escape'
-        ) {
-          event.preventDefault()
-          setStage('filesystem')
-        }
+      if (stage === 'showreel' && (event.key === 'Escape' || event.key === 'Enter')) {
+        event.preventDefault()
+        setStage('filesystem')
       }
     }
 

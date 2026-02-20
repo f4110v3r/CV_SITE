@@ -5,9 +5,8 @@ function ShowreelScreen({ onContinue }) {
 
   return (
     <div className="terminal showreel-screen">
-      <div className="terminal-header" onClick={handleContinue} style={{ cursor: 'pointer' }}>
+      <div className="terminal-header">
         <span>SHOWREEL.EXE — ПОЛНОЭКРАННЫЙ РЕЖИМ</span>
-        <span>[ ESC / ENTER / КЛИК — ПРОДОЛЖИТЬ ]</span>
       </div>
       <div className="showreel-main">
         <div className="showreel-ascii">╔══ SHOWREEL.EXE — FULLSCREEN MODE ════════════════════╗</div>
@@ -22,14 +21,20 @@ function ShowreelScreen({ onContinue }) {
             controls
           />
         </div>
-        <div className="showreel-caption" onClick={handleContinue} style={{ cursor: 'pointer' }}>
+        <div className="showreel-caption">
           <div>шоу-рил устарел, лучше посмотрите актуальные работы в следующем окне</div>
           <div>[ новый в процессе создания ]</div>
         </div>
+        <button
+          type="button"
+          className="showreel-continue-btn"
+          onClick={handleContinue}
+        >
+          Перейти к работам
+        </button>
       </div>
-      <div className="status-bar" onClick={handleContinue} style={{ cursor: 'pointer' }}>
-        <span>PLAYER</span>
-        <span>Нажмите ESC, чтобы перейти ко всемиу остальному</span>
+      <div className="status-bar">
+        <span>ESC или кнопка ниже — продолжить</span>
       </div>
     </div>
   )

@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
-const pubUrl = (path) => (path ? new URL(`../${path.replace(/^\//, '')}`, import.meta.url).href : '')
+const pubUrl = (path) => {
+  if (!path) return ''
+  const base = (import.meta.env.BASE_URL || '/').replace(/\/?$/, '/')
+  return base + path.replace(/^\//, '')
+}
 
 import { fileSystem as staticFileSystem } from '../data/fileSystem'
 import { aboutMe } from '../data/aboutMe'

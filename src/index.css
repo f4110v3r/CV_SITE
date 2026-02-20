@@ -254,6 +254,26 @@ body {
   color: #6edc6e;
 }
 
+.showreel-continue-btn {
+  display: block;
+  width: 100%;
+  max-width: 280px;
+  margin: 12px auto 0;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #9efc9e;
+  color: #9efc9e;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.showreel-continue-btn:hover {
+  background: #9efc9e;
+  color: #000;
+}
+
 .status-bar {
   border-top: 1px solid #2a5f2a;
   padding-top: 4px;
