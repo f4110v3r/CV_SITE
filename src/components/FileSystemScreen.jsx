@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+
+const pubUrl = (path) => (path ? new URL(`../${path.replace(/^\//, '')}`, import.meta.url).href : '')
 import { fileSystem as staticFileSystem } from '../data/fileSystem'
 import { aboutMe } from '../data/aboutMe'
 
@@ -377,7 +379,7 @@ function AboutBlock() {
           overflow: 'hidden',
         }}>
           {photoPath && !photoError && (
-            <img src={`${import.meta.env.BASE_URL || '/'}${(photoPath || '').replace(/^\//, '')}`} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={() => setPhotoError(true)} />
+            <img src={pubUrl(photoPath)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={() => setPhotoError(true)} />
           )}
           {showPlaceholder && <span className="text-muted" style={{ fontSize: 10 }}>[ФОТО]</span>}
         </div>
@@ -396,7 +398,7 @@ function AboutBlock() {
         {cvPdfPath && (
           <>
             <br />
-            <ContactLink href={`${import.meta.env.BASE_URL || '/'}${(cvPdfPath || '').replace(/^\//, '')}`}>Скачать CV (PDF)</ContactLink>
+            <ContactLink href={pubUrl(cvPdfPath)}>Скачать CV (PDF)</ContactLink>
           </>
         )}
       </div>
