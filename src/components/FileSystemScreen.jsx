@@ -369,8 +369,8 @@ function AboutBlock() {
   const tg = typeof contacts.telegram === 'object' ? contacts.telegram : { label: contacts.telegram, href: `https://t.me/${String(contacts.telegram).replace('@', '')}` }
   const em = typeof contacts.email === 'object' ? contacts.email : { label: contacts.email, href: `mailto:${contacts.email}` }
   return (
-    <div style={{ fontSize: 12, lineHeight: 1.5, display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
+    <div className="about-block" style={{ fontSize: 12, lineHeight: 1.5, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <div className="about-block-header" style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
         <div className="photo-placeholder" style={{
           width: 80,
           height: 80,
