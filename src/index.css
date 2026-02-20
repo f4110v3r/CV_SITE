@@ -394,7 +394,8 @@ body {
 .retro-window {
   background-color: #000;
   border: 1px solid #9efc9e;
-  max-width: 960px;
+  max-width: 1200px;
+  min-width: 800px;
   width: 95%;
   padding: 0;
   box-shadow:
@@ -427,10 +428,14 @@ body {
   font-size: 12px;
 }
 
-.retro-window-body video {
+.retro-window-body video,
+.retro-window-video {
   width: 100%;
-  max-height: 70vh;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
   background-color: #000;
+  display: block;
 }
 
 .retro-window-footer {
@@ -517,6 +522,13 @@ body {
 
 .audio-panel-track {
   font-family: ui-monospace, monospace;
+}
+
+@media (max-width: 900px) {
+  .retro-window {
+    min-width: auto;
+    width: 98%;
+  }
 }
 
 @media (max-width: 720px) {

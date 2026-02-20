@@ -500,7 +500,7 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
             <span className="text-strong">{name}</span> — {path}
           </div>
           {isVideo && (videoSrc ? (
-            <video src={videoSrc} autoPlay muted loop playsInline controls style={{ width: '100%', maxHeight: '50vh', objectFit: 'contain', background: '#000' }} onClick={(e) => e.stopPropagation()} />
+            <video src={videoSrc} autoPlay muted loop playsInline controls className="retro-window-video" onClick={(e) => e.stopPropagation()} />
           ) : (
             <div className="text-muted">Видео не найдено.</div>
           ))}
