@@ -13,7 +13,7 @@ function ShowreelScreen({ onContinue }) {
       </div>
       <div className="showreel-main">
         <div className="showreel-ascii">╔══ SHOWREEL.EXE — FULLSCREEN MODE ════════════════════╗</div>
-        <div className="showreel-frame">
+        <div className="showreel-frame" onClick={(e) => e.stopPropagation()}>
           <video
             className="showreel-video"
             src={new URL('../showreel.mp4', import.meta.url).href}
