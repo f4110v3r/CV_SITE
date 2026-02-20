@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const pubUrl = (path) => (path ? new URL(`../${path.replace(/^\//, '')}`, import.meta.url).href : '')
 
@@ -337,16 +338,18 @@ function FileSystemScreen() {
         </div>
       </div>
 
-      {activeFile && (
-        <RetroWindow
-          activeFile={activeFile}
-          videoModules={videoModules}
-          textModulesRaw={textModulesRaw}
-          sysModulesRaw={sysModulesRaw}
-          mdModulesRaw={mdModulesRaw}
-          onClose={() => setActiveFile(null)}
-        />
-      )}
+      {activeFile &&
+        createPortal(
+          <RetroWindow
+            activeFile={activeFile}
+            videoModules={videoModules}
+            textModulesRaw={textModulesRaw}
+            sysModulesRaw={sysModulesRaw}
+            mdModulesRaw={mdModulesRaw}
+            onClose={() => setActiveFile(null)}
+          />,
+          document.body
+        )}
     </div>
   )
 }
@@ -461,7 +464,11 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
   let fileContent = ''
   let videoSrc = ''
   if (isVideo && globKey && videoModules[globKey]) {
-    videoSrc = videoModules[globKey].default || ''
+    const raw = videoModules[globKey].default || ''
+    const base = import.meta.env.BASE_URL || '/'
+    videoSrc = (base !== '/' && raw && !raw.startsWith('http') && !raw.startsWith(base))
+      ? (base.replace(/\/?$/, '/') + raw.replace(/^\//, ''))
+      : raw
   }
   if (isVideo && !videoSrc && /showreel\.mp4$/i.test(name)) {
     videoSrc = new URL('../showreel.mp4', import.meta.url).href
