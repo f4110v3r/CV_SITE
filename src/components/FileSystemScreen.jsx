@@ -462,6 +462,9 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
   if (isVideo && globKey && videoModules[globKey]) {
     videoSrc = videoModules[globKey].default || ''
   }
+  if (isVideo && !videoSrc && /showreel\.mp4$/i.test(name)) {
+    videoSrc = new URL('../showreel.mp4', import.meta.url).href
+  }
   if (isTxt && globKey && textModulesRaw[globKey]) {
     fileContent = typeof textModulesRaw[globKey] === 'string' ? textModulesRaw[globKey] : String(textModulesRaw[globKey] ?? '')
   }
@@ -496,7 +499,7 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
             <span className="text-strong">{name}</span> — {path}
           </div>
           {isVideo && (videoSrc ? (
-            <video src={videoSrc} autoPlay muted loop playsInline controls style={{ width: '100%', maxHeight: '50vh', objectFit: 'contain', background: '#000' }} />
+            <video src={videoSrc} autoPlay muted loop playsInline controls style={{ width: '100%', maxHeight: '50vh', objectFit: 'contain', background: '#000' }} onClick={(e) => e.stopPropagation()} />
           ) : (
             <div className="text-muted">Видео не найдено.</div>
           ))}
