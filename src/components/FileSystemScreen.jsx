@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 const pubUrl = (path) => (path ? new URL(`../${path.replace(/^\//, '')}`, import.meta.url).href : '')
+
+function toAbsoluteVideoUrl(pathOrUrl) {
+  if (!pathOrUrl) return ''
+  if (pathOrUrl.startsWith('http')) return pathOrUrl
+  const base = import.meta.env.BASE_URL || '/'
+  const baseNorm = base.replace(/\/?$/, '/')
+  if (pathOrUrl.startsWith(baseNorm) || pathOrUrl.startsWith(base)) return new URL(pathOrUrl, window.location.origin).href
+  return new URL(pathOrUrl.replace(/^\//, ''), window.location.origin + baseNorm).href
+}
 import { fileSystem as staticFileSystem } from '../data/fileSystem'
 import { aboutMe } from '../data/aboutMe'
 
@@ -460,7 +469,7 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
   let fileContent = ''
   let videoSrc = ''
   if (isVideo && globKey && videoModules[globKey]) {
-    videoSrc = videoModules[globKey].default || ''
+    videoSrc = toAbsoluteVideoUrl(videoModules[globKey].default || '')
   }
   if (isVideo && !videoSrc && /showreel\.mp4$/i.test(name)) {
     videoSrc = new URL('../showreel.mp4', import.meta.url).href
