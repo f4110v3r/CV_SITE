@@ -461,6 +461,14 @@ body {
   display: block;
 }
 
+.retro-window-iframe {
+  width: 100%;
+  height: 60vh;
+  min-height: 360px;
+  border: none;
+  background: #000;
+}
+
 .retro-window-footer {
   border-top: 1px solid #9efc9e;
   margin-top: 6px;

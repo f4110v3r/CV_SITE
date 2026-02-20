@@ -15,6 +15,7 @@ const videoModules = import.meta.glob('../projects/**/*.mp4', { eager: true })
 const textModulesRaw = import.meta.glob('../projects/**/*.txt', { query: '?raw', import: 'default', eager: true })
 const sysModulesRaw = import.meta.glob('../projects/**/*.sys', { query: '?raw', import: 'default', eager: true })
 const mdModulesRaw = import.meta.glob('../projects/**/*.md', { query: '?raw', import: 'default', eager: true })
+const urlModulesRaw = import.meta.glob('../projects/**/*.url', { query: '?raw', import: 'default', eager: true })
 
 const staticByFileBase = new Map()
 staticFileSystem.years?.forEach((y) => {
@@ -61,7 +62,7 @@ function buildTreeFromPaths() {
     for (let i = 0; i < segments.length; i++) {
       const seg = segments[i]
       path = [...path, seg]
-      const isFile = i === segments.length - 1 && /\.(mp4|txt|sys|md)$/i.test(seg)
+      const isFile = i === segments.length - 1 && /\.(mp4|txt|sys|md|url)$/i.test(seg)
 
       if (isFile) {
         node.children[seg] = node.children[seg] || {
@@ -80,6 +81,7 @@ function buildTreeFromPaths() {
   }
   Object.keys(allModules).forEach(addPath)
   Object.keys(mdModulesRaw).forEach(addPath)
+  Object.keys(urlModulesRaw).forEach(addPath)
 
   return root
 }
@@ -109,6 +111,7 @@ const SPACE = '    '
 
 function getFileType(name) {
   if (/\.mp4$/i.test(name)) return '[VID]'
+  if (/\.url$/i.test(name)) return '[VID]'
   if (/breakdown\.txt$/i.test(name)) return '[TXT]'
   if (/tools\.sys$/i.test(name)) return '[SYS]'
   if (/\.md$/i.test(name)) return '[MD]'
@@ -205,6 +208,7 @@ function FileSystemScreen() {
 
   function getExt(name) {
     if (/\.mp4$/i.test(name)) return '.mp4'
+    if (/\.url$/i.test(name)) return '.url'
     if (/breakdown\.txt$/i.test(name)) return '_breakdown.txt'
     if (/tools\.sys$/i.test(name)) return '_tools.sys'
     if (/\.md$/i.test(name)) return '.md'
@@ -350,6 +354,7 @@ function FileSystemScreen() {
             textModulesRaw={textModulesRaw}
             sysModulesRaw={sysModulesRaw}
             mdModulesRaw={mdModulesRaw}
+            urlModulesRaw={urlModulesRaw}
             onClose={() => setActiveFile(null)}
           />,
           document.body
@@ -453,20 +458,35 @@ function FileDetails({ activeFile }) {
   )
 }
 
-function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, mdModulesRaw, onClose }) {
+function isEmbedUrl(url) {
+  if (!url || typeof url !== 'string') return false
+  const u = url.trim().toLowerCase()
+  return /embed|youtube|youtu\.be|vimeo|adobe\.io|behance\.net/i.test(u)
+}
+
+function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, mdModulesRaw, urlModulesRaw, onClose }) {
   const { project, path, item } = activeFile
   const name = item?.node?.name || ''
   const isVideo = /\.mp4$/i.test(name)
+  const isUrlVideo = /\.url$/i.test(name)
   const isTxt = /\.txt$/i.test(name)
   const isBreakdown = /breakdown\.txt$/i.test(name)
   const isTools = /tools\.sys$/i.test(name)
   const isMd = /\.md$/i.test(name)
 
-  const ext = isVideo ? '.mp4' : isTxt ? (isBreakdown ? '_breakdown.txt' : '.txt') : isTools ? '_tools.sys' : '.md'
+  const ext = isVideo ? '.mp4' : isUrlVideo ? '.url' : isTxt ? (isBreakdown ? '_breakdown.txt' : '.txt') : isTools ? '_tools.sys' : '.md'
   const globKey = item?.node?.globKey || project?._fileKeys?.[ext]
 
   let fileContent = ''
   let videoSrc = ''
+  let embedSrc = ''
+  if (isUrlVideo && globKey && urlModulesRaw[globKey]) {
+    const url = String(urlModulesRaw[globKey] ?? '').trim()
+    if (url && /^https?:\/\//i.test(url)) {
+      if (isEmbedUrl(url)) embedSrc = url
+      else videoSrc = url
+    }
+  }
   if (isVideo && globKey && videoModules[globKey]) {
     const raw = videoModules[globKey].default || ''
     const base = import.meta.env.BASE_URL || '/'
@@ -499,7 +519,7 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
       <div className="retro-window" onClick={(e) => e.stopPropagation()}>
         <div className="retro-window-header">
           <span>
-            {isVideo && 'ВИДЕО'}
+            {(isVideo || isUrlVideo) && 'ВИДЕО'}
             {(isBreakdown || isTxt) && 'ТЕКСТ'}
             {isTools && 'ИНСТРУМЕНТЫ'}
             {isMd && 'MARKDOWN'}
@@ -510,11 +530,15 @@ function RetroWindow({ activeFile, videoModules, textModulesRaw, sysModulesRaw, 
           <div style={{ marginBottom: 4 }}>
             <span className="text-strong">{name}</span> — {path}
           </div>
-          {isVideo && (videoSrc ? (
-            <video src={videoSrc} autoPlay muted loop playsInline controls className="retro-window-video" onClick={(e) => e.stopPropagation()} />
-          ) : (
-            <div className="text-muted">Видео не найдено.</div>
-          ))}
+          {(isVideo || isUrlVideo) && (
+            embedSrc ? (
+              <iframe src={embedSrc} title="Video" className="retro-window-video retro-window-iframe" allow="autoplay; fullscreen" allowFullScreen />
+            ) : videoSrc ? (
+              <video src={videoSrc} autoPlay muted loop playsInline controls className="retro-window-video" onClick={(e) => e.stopPropagation()} />
+            ) : (
+              <div className="text-muted">Видео не найдено.</div>
+            )
+          )}
           {(isTxt || isBreakdown || isTools || isMd) && (
             <pre style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{fileContent || '[ Пусто ]'}</pre>
           )}

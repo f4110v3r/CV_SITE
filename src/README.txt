@@ -10,6 +10,8 @@
 
 Поддерживаемые файлы:
   .mp4           — видео
+  .url           — ссылка на видео (YouTube, Vimeo, Behance/Adobe и т.п.)
+                  Создайте файл video.url с одной строкой — URL видео
   *_breakdown.txt — разбор
   *_tools.sys    — инструменты
   .md            — markdown
