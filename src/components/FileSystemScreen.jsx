@@ -397,6 +397,7 @@ function AboutBlock() {
           {showPlaceholder && <span className="text-muted" style={{ fontSize: 10 }}>[ФОТО]</span>}
         </div>
         <div style={{ flex: 1 }}>
+          <div className="text-strong" style={{ marginBottom: 2, fontSize: 14 }}>МАКСИМ ЗОЛИКОВ</div>
           {tagline && <div className="text-muted" style={{ marginBottom: 6, fontSize: 11 }}>{tagline}</div>}
           <div className="text-strong" style={{ marginBottom: 4 }}>О СЕБЕ</div>
           <div style={{ whiteSpace: 'pre-wrap' }}>{about}</div>
