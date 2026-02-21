@@ -178,8 +178,8 @@ function FileSystemScreen() {
   const selectedItem = allItems[safeIndex]
 
   const currentPath = selectedItem
-    ? `C:\\MAKSIM\\${selectedItem.pathStr}>`
-    : 'C:\\MAKSIM\\>'
+    ? `C:\\MAKSIM\\ПРОЕКТЫ\\${selectedItem.pathStr}>`
+    : 'C:\\MAKSIM\\ПРОЕКТЫ\\>'
 
   const toggleExpanded = (pathStr) => {
     setExpanded((prev) => {
@@ -201,7 +201,7 @@ function FileSystemScreen() {
       setActiveFile({
         item,
         project: { ...project, _fileKeys: item.node.globKey ? { [ext]: item.node.globKey } : {} },
-        path: `C:\\MAKSIM\\${path}`,
+        path: `C:\\MAKSIM\\ПРОЕКТЫ\\${path}`,
       })
     }
   }
@@ -317,13 +317,13 @@ function FileSystemScreen() {
     <div className="terminal">
       <div className="fs-layout">
         <div className="fs-topbar">
-          <span>╔═ C:\\MAKSIM\\ ═ MOTION FILE SYSTEM <span className="text-muted">[СТРЕЛКИ · ENTER — ОТКРЫТЬ · ← СВЕРНУТЬ]</span></span>
+          <span>╔═ МАКСИМ ЗОЛИКОВ ═ MOTION FILE SYSTEM <span className="text-muted">[СТРЕЛКИ · ENTER — ОТКРЫТЬ · ← СВЕРНУТЬ]</span></span>
           <span className="text-muted">ESC ЗАКРЫВАЕТ</span>
         </div>
 
         <div className="fs-main">
           <div className="fs-tree">
-            <div className="fs-path">C:\\MAKSIM\\</div>
+            <div className="fs-path">C:\\MAKSIM\\ПРОЕКТЫ\\</div>
             <div className="tree-line">
               <span className="tree-line-prefix" />
               <span className="tree-line-name">│</span>
